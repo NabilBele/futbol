@@ -142,12 +142,11 @@ document.addEventListener("DOMContentLoaded", function() {
 .reply-bubble {
     padding: 10px;
     background-color: #f6f7f8;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
 .reply-author {
     font-weight: bold;
+    font-size: 14px;
     margin-bottom: 5px;
 }
 

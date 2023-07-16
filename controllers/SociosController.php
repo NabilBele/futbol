@@ -3,6 +3,9 @@
 namespace app\controllers;
 
 use app\models\Alquileres;
+use app\models\Comments;
+use app\models\Rates;
+use app\models\Replies;
 use app\models\Socios;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -120,12 +123,20 @@ class SociosController extends GeneralController
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
+   public function actionDelete($id)
+{
+    Rates::deleteAll(['userId' => $id]);
+    Comments::deleteAll(['userId' => $id]);
+    Replies::deleteAll(['userId' => $id]);
+    Alquileres::deleteAll(['idSocio' => $id]);
 
-        return $this->redirect(['index']);
-    }
+    // Find the model with the given $id and delete it
+    $this->findModel($id)->delete();
+
+    // Redirect to the 'index' page after successful deletion
+    return $this->redirect(['index']);
+}
+
 
     /**
      * Finds the Socios model based on its primary key value.

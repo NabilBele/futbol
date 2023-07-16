@@ -18,7 +18,7 @@ public function behaviors()
                 [
                     'allow' => true,
                     'controllers' => ['site'],
-                    'actions' => ['index', 'login', 'register',"about","viewcampo"],
+                    'actions' => ['index', 'login', 'register',"about","viewcampo",'search'],
                     'roles' => ['?'], // Guest (not logged in) can access these actions
                 ],
                 [

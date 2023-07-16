@@ -210,7 +210,7 @@ ADD
 ALTER TABLE
   `comments`
 ADD
-  CONSTRAINT `fkCommentsPosts` FOREIGN KEY (`postId`) REFERENCES `alquileres` (`id`);
+  CONSTRAINT `fkCommentsCampos` FOREIGN KEY (`postId`) REFERENCES `campos` (`id`);
 
 ALTER TABLE
   `replies`

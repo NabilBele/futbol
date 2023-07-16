@@ -41,6 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
             //'fechahora',
             //'password',
             //'isAdmin',
+                [
+                'class' => ActionColumn::className(),
+                'urlCreator' => function ($action, Socios $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                 }
+            ]
         ],
     ]); ?>
 

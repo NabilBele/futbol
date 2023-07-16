@@ -248,7 +248,6 @@ public function actionRate($id)
     $rateModel = new Rates();
     $rateModel->idCampo = $id;
     $rateModel->userId = Yii::$app->user->id;
-   
 
     if (Yii::$app->request->isPost) {
         $postData = Yii::$app->request->post();
@@ -256,34 +255,40 @@ public function actionRate($id)
         if ($rateModel->load($postData) && $rateModel->validate()) {
             $rateModel->save();
 
+            // If the comment is not empty, save it in the Comments table
+            if (!empty($rateModel->comment)) {
+                $commentModel = new Comments();
+                $commentModel->postId = $id;
+                $commentModel->userId = Yii::$app->user->id;
+                $commentModel->comment = $rateModel->comment;
+                $commentModel->save();
+            }
+
             // Calculate and update the average rate for the corresponding campo
             $campo = Campos::findOne($id);
             $campo->rate = $campo->getAverage();
             $campo->save();
         }
 
-
         return $this->redirect(['viewcampo', 'id' => $id]);
     }
 
-    return $this->render('rate', ['rateModel' => $rateModel,]);
+    return $this->render('rate', ['rateModel' => $rateModel]);
 }
+
  public function actionSearch()
     {
-        $searchModel = new Campos(); // Assuming you have a search model for "Campos".
+        $searchModel = new Campos();
         $searchQuery = Yii::$app->request->get('search_query');
 
-        // Create an ActiveDataProvider to retrieve the filtered Campos models
-        $dataProvider = new ActiveDataProvider([
-            'query' => Campos::find()->where(['like', 'nombre', $searchQuery]),
-        ]);
+         $dataProvider = new ActiveDataProvider([
+        'query' => Campos::find()
+            ->where(['or', ['like', 'nombre', $searchQuery], ['like', 'direccion', $searchQuery]]),
+    ]);
 
         return $this->render('search_results', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
-
-
 }

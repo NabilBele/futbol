@@ -14,7 +14,7 @@ use Yii;
  * @property string|null $timestamp
  *
  * @property Likes[] $likes
- * @property Alquileres $post
+ * @property Campos $post
  * @property Replies[] $replies
  * @property Replies[] $replies0
  * @property Socios $user
@@ -39,7 +39,7 @@ class Comments extends \yii\db\ActiveRecord
             [['userId', 'postId'], 'integer'],
             [['timestamp'], 'safe'],
             [['comment'], 'string', 'max' => 500],
-            [['postId'], 'exist', 'skipOnError' => true, 'targetClass' => Alquileres::class, 'targetAttribute' => ['postId' => 'id']],
+            [['postId'], 'exist', 'skipOnError' => true, 'targetClass' => Campos::class, 'targetAttribute' => ['postId' => 'id']],
             [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => Socios::class, 'targetAttribute' => ['userId' => 'id']],
         ];
     }

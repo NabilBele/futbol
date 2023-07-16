@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Comments;
 use app\models\Replies;
 use yii\data\ActiveDataProvider;
@@ -76,20 +77,24 @@ class CommentsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionAdd($id)
-    {
-        $model = new Comments();
+public function actionAdd($id)
+{
+    $model = new Comments();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['/site/viewcampo', 'id' => $id]);
-            }
+    if ($this->request->isPost) {
+        if ($model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['/site/viewcampo', 'id' => $id]);
         } else {
-            $model->loadDefaultValues();
+            Yii::$app->session->setFlash('error', 'Error occurred while adding the comment: ' . print_r($model->errors, true));
         }
-
-     return $this->render('/site/viewcampo', ['id' => $id]);
+    } else {
+        $model->loadDefaultValues();
     }
+
+    return $this->redirect(['/site/viewcampo', 'id' => $id]);
+}
+
+
 
     /**
      * Updates an existing Comments model.

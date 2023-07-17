@@ -66,6 +66,7 @@ class Likes extends \yii\db\ActiveRecord
         return $this->hasOne(Comments::class, ['id' => 'commentId']);
     }
 
+
     /**
      * Gets query for [[Reply]].
      *

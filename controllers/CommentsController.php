@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Likes;
 use Yii;
 use app\models\Comments;
 use app\models\Replies;
@@ -9,6 +10,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * CommentsController implements the CRUD actions for Comments model.
@@ -129,12 +131,14 @@ public function actionAdd($id)
 
         return $this->redirect(['index']);
     }
-public function actionDeletecomment($id,$campo)
+public function actionDeletecomment($id)
 {
     Replies::deleteAll(['commentId' => $id]);
+    Likes::deleteAll(['commentId' => $id]);
     $this->findModel($id)->delete();
 
-    return $this->redirect(['/site/viewcampo',"id"=>$campo]);
+         return $this->redirect(Yii::$app->request->referrer);
+
 }
 
 
@@ -153,5 +157,4 @@ public function actionDeletecomment($id,$campo)
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    
 }

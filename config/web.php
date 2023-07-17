@@ -5,7 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    "name"=>"FutbolCampos",
+    'name' => 'FutbolCampos',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -14,12 +14,12 @@ $config = [
     ],
     'components' => [
         'assetManager' => [
-        'bundles' => [
-            'kartik\form\ActiveFormAsset' => [
-                'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+            'bundles' => [
+                'kartik\form\ActiveFormAsset' => [
+                    'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
+                ],
             ],
         ],
-    ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'CHD-OGIpoccPpnuRmnn4JXx8Ee2sO5sq',
@@ -58,9 +58,17 @@ $config = [
                 'register' => 'site/register',
             ],
         ],
-         'authManager' => [
-        'class' => 'yii\rbac\DbManager',
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
     ],
+    'modules' => [
+        // ...
+        'likes' => [
+            'class' => 'wdmg\likes\Module',
+            'routePrefix' => 'admin'
+        ],
+        // ...
     ],
     'params' => $params,
 ];

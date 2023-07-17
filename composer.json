@@ -24,7 +24,6 @@
         "endroid/qr-code": "^4.8",
         "kartik-v/yii2-widget-fileinput": "dev-master",
         "kartik-v/yii2-widget-datepicker": "dev-master",
-        "2amigos/yii2-google-maps-library": "^1.0",
         "kartik-v/yii2-widget-rating": "dev-master"
     },
     "require-dev": {

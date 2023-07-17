@@ -1,8 +1,10 @@
  <?php
  use app\models\Comments;
+ use app\models\Likes;
  use app\models\Replies;
  use yii\helpers\Html;
  use yii\widgets\ActiveForm;
+ 
  
  ?>
  <div class="comments-section">
@@ -28,6 +30,32 @@
          <div class="comment-header">
              <p class="comment-author"><?= Html::encode($comment->user->nombre) ?></p>
              <div class="comment-actions">
+
+                 <?php
+$hasLiked = Likes::find()
+    ->where(['userId' => Yii::$app->user->id, 'commentId' => $comment->id])
+    ->exists();
+
+$form = ActiveForm::begin([
+    'id' => 'like-form-' . $comment->id,
+    'enableAjaxValidation' => true,
+]);
+?>
+
+                 <!-- Display the like icon -->
+                 <?= Html::a(
+    '<i class="' . ($hasLiked ? 'fas' : 'far') . ' fa-thumbs-up"></i>',
+    ['site/togglelike', 'commentId' => $comment->id],
+    ['class' => 'like-comment', 'data' => ['method' => 'post']]
+) ?>
+
+                 <!-- Display the likes count -->
+                 <span class="likes-count"><?= count($comment->likes); ?></span>
+
+                 <?php ActiveForm::end(); ?>
+
+
+
                  <?php if ($comment->userId === Yii::$app->user->id): ?>
                  <i class="fas fa-ellipsis-v comment-menu"></i>
                  <div class="comment-menu-options">
@@ -45,7 +73,6 @@
          <p class="comment-content"><?= Html::encode($comment->comment) ?></p>
          <p class="comment-actions">
              <?php foreach ($comment->likes as $like): ?>
-             <span class="like-comment">Like (<?= Html::encode($like->user->nombre) ?>)</span>
              <?php endforeach; ?>
              <span class="reply-comment">Reply</span>
          </p>
@@ -90,3 +117,137 @@
      </div>
      <?php endforeach; ?>
  </div>
+
+
+
+ <script>
+ </script>
+
+ <style>
+.comments-section {
+    margin-top: 20px;
+}
+
+.comment {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f6f7f8;
+}
+
+.comment-author {
+    font-weight: bold;
+    margin: 0;
+}
+
+.comment-content {
+    margin-top: 5px;
+}
+
+.comment-actions,
+.reply-actions {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #888;
+}
+
+.comment-actions span {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.reply-form {
+    padding: 10px;
+    background-color: #f6f7f8;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.reply-form input[type="text"],
+.reply-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #fff;
+    resize: vertical;
+    outline: none;
+}
+
+.reply-form .btn-primary {
+    margin-top: 10px;
+}
+
+.reply {
+    margin-top: 10px;
+}
+
+.reply-bubble {
+    padding: 10px;
+    background-color: #f6f7f8;
+}
+
+.reply-author {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.reply-content {
+    margin: 0;
+}
+
+.comment-header,
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-actions,
+.reply-actions {
+    position: relative;
+}
+
+.comment-menu,
+.reply-menu {
+    cursor: pointer;
+}
+
+.comment-menu-options,
+.reply-menu-options {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 5px;
+    display: none;
+}
+
+.comment-menu-option,
+.reply-menu-option {
+    display: block;
+    cursor: pointer;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.comment-menu-option:hover,
+.reply-menu-option:hover {
+    background-color: #f9f9f9;
+}
+
+.like-comment {
+    margin-right: 10px;
+    text-decoration: none;
+    font-size: large;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.like-comment:hover>* {
+    transform: scale(1.2);
+}
+ </style>

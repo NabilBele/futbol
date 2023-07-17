@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Alquileres;
 use app\models\Campos;
 use app\models\Comments;
+use app\models\Likes;
 use app\models\Rates;
 use app\models\Socios;
 use Yii;
@@ -121,15 +122,11 @@ class SiteController extends GeneralController
 
         if ($model->validate() && $model->save()) {
             // Registration successful, redirect to a success page or perform additional actions
-            return $this->redirect(['site/success']);
+            return $this->redirect(['site/login']);
         }
     }
 
     return $this->render('register', ['model' => $model]);
-}
-public function actionSuccess()
-{
-    return $this->render('success');
 }
 public function actionViewcampo($id)
 {
@@ -291,4 +288,38 @@ public function actionRate($id)
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionTogglelike($commentId)
+{
+    // Check if the user is authenticated
+    if (Yii::$app->user->isGuest) {
+        return $this->redirect(['site/login']);
+    }
+    
+    $comment = Comments::findOne($commentId);
+    
+    // Check if the comment exists
+    if (!$comment) {
+        throw new NotFoundHttpException('The requested comment does not exist.');
+    }
+    
+    $userId = Yii::$app->user->id;
+    
+    // Check if the user has already liked the comment
+    $like = Likes::findOne(['userId' => $userId, 'commentId' => $comment->id]);
+    
+    if ($like) {
+        // User has already liked the comment, so remove the like
+        $like->delete();
+    } else {
+        // User has not liked the comment, so add the like
+        $like = new Likes();
+        $like->userId = $userId;
+        $like->commentId = $comment->id;
+        $like->timestamp = date('Y-m-d H:i:s');
+        $like->save();
+    }  
+    // Return a response indicating success
+    
+         return $this->redirect(Yii::$app->request->referrer);
+}
 }

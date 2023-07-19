@@ -320,6 +320,6 @@ public function actionRate($id)
     }  
     // Return a response indicating success
     
-         return $this->redirect(Yii::$app->request->referrer);
+         return "success";
 }
 }

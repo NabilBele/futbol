@@ -42,15 +42,15 @@ $form = ActiveForm::begin([
 ]);
 ?>
 
-                 <!-- Display the like icon -->
-                 <?= Html::a(
-    '<i class="' . ($hasLiked ? 'fas' : 'far') . ' fa-thumbs-up"></i>',
-    ['site/togglelike', 'commentId' => $comment->id],
-    ['class' => 'like-comment', 'data' => ['method' => 'post']]
-) ?>
+                 <button class="like-comment"
+                     data-action="<?= Yii::$app->urlManager->createUrl(['site/togglelike', 'commentId' => $comment->id]) ?>">
+                     <i class="<?= $hasLiked ? 'fas' : 'far' ?> fa-thumbs-up"></i>
+                 </button>
+
+
 
                  <!-- Display the likes count -->
-                 <span class="likes-count"><?= count($comment->likes); ?></span>
+                 <span class="likes-count" id="likes-count-<?= $comment->id ?>"><?= count($comment->likes); ?></span>
 
                  <?php ActiveForm::end(); ?>
 
@@ -121,6 +121,26 @@ $form = ActiveForm::begin([
 
 
  <script>
+$('.like-comment').on('click', function(event) {
+    event.preventDefault();
+
+    var likeButton = $(this);
+    var likesCount = likeButton.siblings('.likes-count');
+
+    $.post({
+        url: likeButton.data('action'),
+        data: likeButton.data('params'),
+        success: function(response) {
+            if (response === 'success') {
+                // Toggle the like button's class and update the likes count
+                likeButton.find('i').toggleClass('fas far');
+                likesCount.text(parseInt(likesCount.text()) + (likeButton.find('i').hasClass(
+                    'fas') ? 1 : -1));
+                console.log('works, no need to reload. Stop here');
+            }
+        }
+    });
+});
  </script>
 
  <style>
@@ -241,9 +261,10 @@ $form = ActiveForm::begin([
 
 .like-comment {
     margin-right: 10px;
-    text-decoration: none;
     font-size: large;
     position: relative;
+    border: none;
+    color: blue;
     transition: transform 0.3s ease;
 }
 

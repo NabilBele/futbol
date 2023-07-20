@@ -84,13 +84,13 @@ $(document).ready(function() {
                 var parsedResponse = JSON.parse(response);
 
                 if (parsedResponse.success === true) {
-                    console.log("Works");
 
                     // Fetch the updated comments section
                     $.ajax({
                         url: parsedResponse.fetchCommentsUrl,
                         type: "GET",
                         success: function(updatedComments) {
+                            console.log(updatedComments);
                             $('.comments-section').html(updatedComments);
 
                             // Clear the comment input field

@@ -68,3 +68,26 @@ document.addEventListener("DOMContentLoaded", function() {
     font-size: 20px;
 }
 </style>
+
+<!--Like Style-->
+<!--Like Style-->
+<!--Like Style-->
+<style>
+.like-comment {
+    font-size: large;
+    position: relative;
+    border: none;
+    color: blue;
+    background-color: transparent;
+    transition: transform 0.3s ease;
+}
+
+.like-comment:hover>* {
+    transform: scale(1.2);
+}
+
+#like-form-8,
+#like-form-4 {
+    margin: 0;
+}
+</style>

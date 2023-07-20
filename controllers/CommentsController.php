@@ -143,12 +143,19 @@ public function actionAdd($postId)
     }
 public function actionDeletecomment($id)
 {
+    // Step 1: Delete associated replies for the comment
     Replies::deleteAll(['commentId' => $id]);
+
+    // Step 2: Delete associated likes for the comment
     Likes::deleteAll(['commentId' => $id]);
-    $this->findModel($id)->delete();
 
-         return $this->redirect(Yii::$app->request->referrer);
+    // Step 3: Find the comment model by its ID and delete it
+    $comment = $this->findModel($id);
+    $comment->delete();
 
+    // Step 4: Return a JSON response indicating successful deletion
+    Yii::$app->response->format = Response::FORMAT_JSON;
+    return ['success' => true];
 }
 
 

@@ -20,23 +20,3 @@ $form = ActiveForm::begin([
 <span class="likes-count" id="likes-count-<?= $comment->id ?>"><?= count($comment->likes); ?></span>
 
 <?php ActiveForm::end(); ?>
-
-<style>
-.like-comment {
-    font-size: large;
-    position: relative;
-    border: none;
-    color: blue;
-    background-color: transparent;
-    transition: transform 0.3s ease;
-}
-
-.like-comment:hover>* {
-    transform: scale(1.2);
-}
-
-#like-form-8,
-#like-form-4 {
-    margin: 0;
-}
-</style>

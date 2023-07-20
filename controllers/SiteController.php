@@ -322,4 +322,14 @@ public function actionRate($id)
     
          return "success";
 }
+        public function actionFetchcomments($postId)
+{
+    $model = Campos::findOne($postId);
+   $comments = Comments::findAll(["postId"=>$postId]);
+ 
+    return $this->renderPartial('commentSection/_CommmentSection', [
+        'model' => $model,
+        'comments' => $comments,
+    ]);
+}
 }

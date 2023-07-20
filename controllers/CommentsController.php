@@ -2,11 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\Campos;
 use app\models\Likes;
 use Yii;
 use app\models\Comments;
 use app\models\Replies;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -79,23 +82,30 @@ class CommentsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-public function actionAdd($id)
+public function actionAdd($postId)
 {
-    $model = new Comments();
+    if (Yii::$app->request->isAjax) {
+        $newComment = new Comments();
+        $userId = Yii::$app->user->id;
+    
 
-    if ($this->request->isPost) {
-        if ($model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['/site/viewcampo', 'id' => $id]);
-        } else {
-            Yii::$app->session->setFlash('error', 'Error occurred while adding the comment: ' . print_r($model->errors, true));
+
+        // Load the submitted form data
+        if ($newComment->load(Yii::$app->request->post())) {
+        $newComment->userId = $userId;
+        $newComment->postId = $postId;
+            if ($newComment->save()) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+        $fetchCommentsUrl = Url::to(['/site/fetchcomments', 'postId' => $postId]);
+        return Json::encode(['success' => true, 'fetchCommentsUrl' => $fetchCommentsUrl]);
+               
+            }else{
+                print_r("Error");exit;
+            }
         }
-    } else {
-        $model->loadDefaultValues();
     }
-
-    return $this->redirect(['/site/viewcampo', 'id' => $id]);
+    return false; // In case of non-AJAX requests or form data not loaded
 }
-
 
 
     /**
@@ -157,4 +167,6 @@ public function actionDeletecomment($id)
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
 }

@@ -1,5 +1,4 @@
-<?php include("001CSS.php");
-
+<?php 
 use app\models\Rates;
 use kartik\rating\StarRating;
 ?>
@@ -54,4 +53,3 @@ for ($i = 5; $i > 0; $i--) {
     echo '</div>';
 }
 ?>
-                <?php include('script.php') ?>

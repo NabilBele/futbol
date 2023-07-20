@@ -4,8 +4,6 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
-use yii\helpers\FileHelper;
-use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 /**

@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+/** @var yii\web\View $this */
 
 $this->title = $model->nombre;
 ?>
@@ -28,8 +29,9 @@ $this->title = $model->nombre;
         </div>
     </div>
 </div>
-
+</div>
 <hr>
+
 
 <!-- Rating Modal -->
 <?php include('styles/_rateModal.php') ?>
@@ -38,7 +40,12 @@ $this->title = $model->nombre;
 <?php include('rateScript/RatingDetails.php') ?>
 
 <!-- Comment Section -->
-<?php include('styles/_CommmentSection.php') ?>
-</div>
-
+<?php include('commentSection/_CommmentSection.php') ?>
+<!-- Style and Script-->
 <?php include('styles/CampoDetails.php') ?>
+<!-- Likes Script -->
+<?php include('commentSection/LikesScript.php') ?>
+<!-- Rating Script -->
+<?php include('rateScript/RateScript.php') ?>
+<!-- Rating CSS -->
+<?php include("rateScript/001CSS.php"); ?>

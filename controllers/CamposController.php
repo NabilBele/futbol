@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Alquileres;
 use app\models\Campos;
+use app\models\Comments;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -146,4 +147,5 @@ class CamposController extends GeneralController
         $model = Alquileres::find()->where(['idCampo' => $id])->all();
         return $this->render('List',['reservesList'=>$model]);
     }
+
 }
